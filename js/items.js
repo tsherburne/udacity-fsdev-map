@@ -1,4 +1,4 @@
-/* global ko */
+/* global ko mapResize */
 
 var ItemsViewModel = function() {
 
@@ -7,10 +7,13 @@ var ItemsViewModel = function() {
 
     self.openItems = function() {
         self.itemsOpen(true); 
+        mapResize();
     };
     
     self.closeItems = function() {
         self.itemsOpen(false);
+        mapResize();
+
     };
     
     self.mainStatus = ko.computed(function() {

@@ -3,11 +3,11 @@
 }
 
 .body_withSidebar {
-    margin-left: 50%;
+    margin-left: 30%;
 }
 
 .sidebar_Open {
-    width: 50%;
+    width: 30%;
     display: block
 }
 
@@ -21,4 +21,9 @@
 
 .nav_Off {
     display: none;
+}
+
+#map {
+    height: 600px;
+    width: 100%;
 }

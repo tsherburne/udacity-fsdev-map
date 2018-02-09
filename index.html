@@ -22,8 +22,13 @@
     <button class="w3-bar-item w3-button w3-large" 
         data-bind="click: closeItems">Close <i class="fa fa-window-close"></i></button>
     
-    <div data-bind="foreach: locations">
-        <a href="#" class="w3-bar-item w3-button" data-bind="text: title"></a>
+    <form class="w3-bar-item w3-border w3-large" data-bind="submit: filterMap">
+      <input type="text" placeholder="Filter places...." data-bind="textInput: itemsFilter">
+      <button type="submit"><i class="fa fa-search"></i></button>
+    </form>
+
+    <div data-bind="foreach: filteredMapItems">
+        <a href="#" class="w3-bar-item w3-button w3-large" data-bind="text: title"></a>
     </div>
 </div>
 

@@ -1,6 +1,6 @@
 /* global google locations */
 var map;
-var uluru = {lat: 38.0400823, lng: -78.5199934};
+var center = {lat: 38.0400823, lng: -78.5199934};
 
 var markers = [];
 
@@ -9,7 +9,7 @@ function initMap() {
 
     map = new google.maps.Map(document.getElementById('map'), {
         zoom: 13,
-        center: uluru,
+        center: center,
         mapTypeControl: false
     });
     
@@ -41,9 +41,16 @@ function showListings() {
     map.fitBounds(bounds);
 }
 
+// This function will loop through the listings and hide them all.
+function hideListings() {
+    for (var i = 0; i < markers.length; i++) {
+        markers[i].setMap(null);
+    }
+}
+
 function mapResize() {
     console.log("Map Resized");
     google.maps.event.trigger(map, 'resize');
-    map.setCenter(uluru);
+    map.setCenter(center);
     showListings();
 }

@@ -21,9 +21,10 @@
         data-bind="css: sideBarStatus">
     <button class="w3-bar-item w3-button w3-large" 
         data-bind="click: closeItems">Close <i class="fa fa-window-close"></i></button>
-    <a href="#" class="w3-bar-item w3-button">Link 1</a>
-    <a href="#" class="w3-bar-item w3-button">Link 2</a>
-    <a href="#" class="w3-bar-item w3-button">Link 3</a>
+    
+    <div data-bind="foreach: locations">
+        <a href="#" class="w3-bar-item w3-button" data-bind="text: title"></a>
+    </div>
 </div>
 
 <div data-bind="css: mainStatus">

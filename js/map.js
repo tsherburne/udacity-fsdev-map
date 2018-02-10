@@ -3,6 +3,8 @@ var map;
 var center = {lat: 38.0400823, lng: -78.5199934};
 var initialBounds;
 var markers = [];
+var iconBase = 'https://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png';
+
 
 
 function initMap() {
@@ -21,9 +23,34 @@ function initMap() {
 
 }
 
+function populateInfoWindow(marker, infowindow) {
+    // Check to make sure the infowindow is not already opened on this marker.
+    if (infowindow.marker != marker) {
+        infowindow.marker = marker;
+        infowindow.setContent('<div>' + marker.title + '</div>');
+        infowindow.open(map, marker);
+        // Make sure the marker property is cleared if the infowindow is closed.
+        infowindow.addListener('closeclick', function() {
+            infowindow.marker = null;
+        });
+    }
+}
+
 function setMarkers() {
     // Hide all items before resetting markers based on 'filtered' locations
     hideItems();
+ 
+    var defaultIcon = {
+        path: google.maps.SymbolPath.BACKWARD_CLOSED_ARROW,
+        scale: 5
+    }          
+    var hoverIcon = {
+        path: google.maps.SymbolPath.BACKWARD_CLOSED_ARROW,
+        strokeColor: 'blue',
+        scale: 5
+    }
+    
+    var largeInfowindow = new google.maps.InfoWindow();
     
     for (var i = 0; i < locations.length; i++) {
         // Get the position from the location array.
@@ -34,13 +61,22 @@ function setMarkers() {
                     position: position,
                     title: title,
                     animation: google.maps.Animation.DROP,
-                    id: i
-        });
+                    icon: defaultIcon
+                });
         markers.push(marker);
+            marker.addListener('mouseover', function() {
+            this.setIcon(hoverIcon);
+            });
+        marker.addListener('mouseout', function() {
+            this.setIcon(defaultIcon);
+        });
+        marker.addListener('click', function() {
+            populateInfoWindow(this, largeInfowindow);
+          });
     }
 }
 
-// This function will loop through the markers array and display them all.
+// loop through the markers array and display them all
 function showItems() {
     if (markers.length > 0) {
         var bounds = new google.maps.LatLngBounds();

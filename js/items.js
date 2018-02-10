@@ -1,4 +1,4 @@
-/* global ko mapResize showListings hideListings */
+/* global ko mapResize showItems setMarkers */
 
 var allLocations = [
     {title: 'UVA Rotunda', location: {lat: 38.0326828, lng: -78.503269}},
@@ -17,6 +17,7 @@ var ItemsViewModel = function() {
     var self = this;
     /* keeps track of items sidebar - opened / closed */
     self.itemsOpen = ko.observable(false);
+    /* keeps track of the filter list of map items */
     self.filteredMapItems = ko.observableArray();
 
     /* the filter string */
@@ -41,12 +42,30 @@ var ItemsViewModel = function() {
 
     };
 
-    self.filterMap= function() {
-        self.filteredMapItems.pop();
+    self.filterMap = function() {
+        /* clear filteredMapItems */ 
+        self.filteredMapItems.removeAll();
+        
+        /* filter match in UPPERCASE */
+        var filter = self.itemsFilter().toUpperCase();
+
+        /* rebuild filteredMapItems with items that match filter criteria */
+        for (i = 0; i < allLocations.length; i++) {
+            var item = allLocations[i];
+            var title = allLocations[i].title;
+            if (title.toUpperCase().indexOf(filter) > -1) {
+                self.filteredMapItems.push(item);
+                console.log("Add filtered item: " + title);
+            }
+        }
+
+        locations = self.filteredMapItems();
+
         console.log("Filter Map: " + self.itemsFilter());
-        hideListings();
-        showListings();
-    };    
+        setMarkers();
+        showItems();
+    };
+    
     self.mainStatus = ko.computed(function() {
         return (self.itemsOpen() ? "body_withSidebar" : "body_withoutSidebar");
     });

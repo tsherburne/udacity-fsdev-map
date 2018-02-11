@@ -1,9 +1,8 @@
-/* global google locations */
+/* global google locations $ */
 var map;
 var center = { lat: 38.0400823, lng: -78.5199934 };
 var markers = [];
 var largeInfowindow;
-
 
 function initMap() {
 
@@ -27,6 +26,8 @@ function populateInfoWindowForItem(item) {
         }
     }
 }
+
+
 
 function populateInfoWindow(marker, infowindow) {
     // Check to make sure the infowindow is not already opened on this marker.

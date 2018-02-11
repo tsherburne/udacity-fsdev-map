@@ -1,10 +1,8 @@
 /* global google locations */
 var map;
-var center = {lat: 38.0400823, lng: -78.5199934};
-var initialBounds;
+var center = { lat: 38.0400823, lng: -78.5199934 };
 var markers = [];
-var iconBase = 'https://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png';
-
+var largeInfowindow;
 
 
 function initMap() {
@@ -14,13 +12,20 @@ function initMap() {
         center: center,
         mapTypeControl: false
     });
-    
+
     setMarkers();
     showItems();
-    
-    // save the initial bounds of the map
-    initialBounds = map.getBounds();
 
+}
+
+function populateInfoWindowForItem(item) {
+    // Find marker for item
+    for (var i = 0; i < markers.length; i++) {
+        if (item.title == markers[i].title) {
+            populateInfoWindow(markers[i], largeInfowindow);
+            return;
+        }
+    }
 }
 
 function populateInfoWindow(marker, infowindow) {
@@ -39,40 +44,40 @@ function populateInfoWindow(marker, infowindow) {
 function setMarkers() {
     // Hide all items before resetting markers based on 'filtered' locations
     hideItems();
- 
+
     var defaultIcon = {
-        path: google.maps.SymbolPath.BACKWARD_CLOSED_ARROW,
+        path: google.maps.SymbolPath.CIRCLE,
         scale: 5
-    }          
+    };
     var hoverIcon = {
-        path: google.maps.SymbolPath.BACKWARD_CLOSED_ARROW,
+        path: google.maps.SymbolPath.CIRCLE,
         strokeColor: 'blue',
-        scale: 5
-    }
-    
-    var largeInfowindow = new google.maps.InfoWindow();
-    
+        scale: 6
+    };
+
+    largeInfowindow = new google.maps.InfoWindow();
+
     for (var i = 0; i < locations.length; i++) {
         // Get the position from the location array.
         var position = locations[i].location;
         var title = locations[i].title;
 
         var marker = new google.maps.Marker({
-                    position: position,
-                    title: title,
-                    animation: google.maps.Animation.DROP,
-                    icon: defaultIcon
-                });
+            position: position,
+            title: title,
+            animation: google.maps.Animation.DROP,
+            icon: defaultIcon
+        });
         markers.push(marker);
-            marker.addListener('mouseover', function() {
+        marker.addListener('mouseover', function() {
             this.setIcon(hoverIcon);
-            });
+        });
         marker.addListener('mouseout', function() {
             this.setIcon(defaultIcon);
         });
         marker.addListener('click', function() {
             populateInfoWindow(this, largeInfowindow);
-          });
+        });
     }
 }
 
@@ -80,7 +85,7 @@ function setMarkers() {
 function showItems() {
     if (markers.length > 0) {
         var bounds = new google.maps.LatLngBounds();
-    
+
         // Extend the boundaries of the map for each marker and display the marker
         for (var i = 0; i < markers.length; i++) {
             markers[i].setMap(map);
@@ -90,7 +95,7 @@ function showItems() {
     }
     else {
         // no markers - just blank map at initial zoom level
-        map.setZoom(13);    
+        map.setZoom(13);
     }
 }
 

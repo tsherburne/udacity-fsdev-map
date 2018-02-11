@@ -26,9 +26,10 @@
       <input type="text" placeholder="Filter places...." data-bind="textInput: itemsFilter">
       <button type="submit"><i class="fa fa-search"></i></button>
     </form>
-
+    
+    <!-- Build Filtered Map "items list" in sidebar -->
     <div data-bind="foreach: filteredMapItems">
-        <a href="#" class="w3-bar-item w3-button w3-large" data-bind="text: title"></a>
+        <button class="w3-bar-item w3-button w3-large" data-bind="text: title, click: $parent.highlightItem"></button>
     </div>
 </div>
 

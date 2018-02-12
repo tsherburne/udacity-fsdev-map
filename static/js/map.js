@@ -4,6 +4,7 @@ var center = { lat: 38.0400823, lng: -78.5199934 };
 var markers = [];
 var largeInfowindow;
 
+// The callback function for google maps to initialize and display the map
 function initMap() {
 
     map = new google.maps.Map(document.getElementById('map'), {
@@ -14,21 +15,21 @@ function initMap() {
 
     setMarkers();
     showItems();
-
 }
 
+// When sidebar item is selected, populate the info window
 function populateInfoWindowForItem(item) {
     // Find marker for item
     for (var i = 0; i < markers.length; i++) {
         if (item.title == markers[i].title) {
+            // Populate the info window using the map callback function
             populateInfoWindow(markers[i], largeInfowindow);
             return;
         }
     }
 }
 
-
-
+// The map callback to populate the info window when a map marker is clicked
 function populateInfoWindow(marker, infowindow) {
     // Check to make sure the infowindow is not already opened on this marker.
     if (infowindow.marker != marker) {
@@ -42,13 +43,15 @@ function populateInfoWindow(marker, infowindow) {
         }
 
         var myYelpURL = window.location.href + 'api/yelp/' + yelpId;
-
+        // Get Yelp info for the selected item
         $.getJSON(myYelpURL, function(yelpResponse) {
 
-
+            // Populate the info window from the yelp response
             infowindow.marker = marker;
-            infowindow.setContent('<img src="' + yelpResponse.photos[0] + '" style="width:100px;height:auto;">' +
-                '<div>' + '<i class="fa fa-yelp"></i> ' + yelpResponse.name + '</div>' +
+            infowindow.setContent('<img src="' + yelpResponse.photos[0] + 
+                '" style="width:100px;height:auto;">' +
+                '<div>' + '<i class="fa fa-yelp"></i> ' + 
+                yelpResponse.name + '</div>' +
                 '<div>' + yelpResponse.phone + '</div>'
             );
             infowindow.open(map, marker);
@@ -56,7 +59,7 @@ function populateInfoWindow(marker, infowindow) {
         });
 
 
-        // Make sure the marker property is cleared if the infowindow is closed.
+        // Make sure the marker property is cleared when infowindow is closed.
         infowindow.addListener('closeclick', function() {
             infowindow.marker = null;
         });
@@ -67,6 +70,7 @@ function setMarkers() {
     // Hide all items before resetting markers based on 'filtered' locations
     hideItems();
 
+    // setup the icons for the map markers
     var defaultIcon = {
         path: google.maps.SymbolPath.CIRCLE,
         scale: 5
@@ -79,6 +83,7 @@ function setMarkers() {
 
     largeInfowindow = new google.maps.InfoWindow();
 
+    // Create map markers for all locations
     for (var i = 0; i < locations.length; i++) {
         // Get the position from the location array.
         var position = locations[i].location;
@@ -129,6 +134,7 @@ function hideItems() {
     markers = [];
 }
 
+// Resize the map when side bar opened / closed
 function mapResize() {
     google.maps.event.trigger(map, 'resize');
     map.setCenter(center);

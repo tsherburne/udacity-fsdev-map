@@ -1,12 +1,20 @@
 /* global ko mapResize showItems setMarkers populateInfoWindowForItem */
 
 var allLocations = [
-    { title: 'UVA Rotunda', location: { lat: 38.0326828, lng: -78.503269 }, yelpId: 'university-of-virginia-charlottesville-3' },
-    { title: 'Downtown Mall', location: { lat: 38.029959, lng: -78.4873784 }, yelpId: 'downtown-mall-charlottesville-2' },
-    { title: 'Monticello', location: { lat: 38.0106646, lng: -78.4834914 }, yelpId: 'thomas-jeffersons-monticello-charlottesville' },
-    { title: "Three Notch'd Brewery", location: { lat: 38.0310149, lng: -78.4838429 }, yelpId: 'three-notchd-brewing-company-charlottesville-5' },
-    { title: 'Whiskey Jar', location: { lat: 38.0314142, lng: -78.4849477 }, yelpId: 'the-whiskey-jar-charlottesville' },
-    { title: 'South Street Brewery', location: { lat: 38.0293422, lng: -78.4848757 }, yelpId: 'south-street-brewery-charlottesville' }
+    { title: 'UVA Rotunda', location: { lat: 38.0326828, lng: -78.503269 }, 
+        yelpId: 'university-of-virginia-charlottesville-3' },
+    { title: 'Downtown Mall', location: { lat: 38.029959, lng: -78.4873784 }, 
+        yelpId: 'downtown-mall-charlottesville-2' },
+    { title: 'Monticello', location: { lat: 38.0106646, lng: -78.4834914 }, 
+        yelpId: 'thomas-jeffersons-monticello-charlottesville' },
+    { title: "Three Notch'd Brewery", 
+        location: { lat: 38.0310149, lng: -78.4838429 }, 
+        yelpId: 'three-notchd-brewing-company-charlottesville-5' },
+    { title: 'Whiskey Jar', location: { lat: 38.0314142, lng: -78.4849477 }, 
+        yelpId: 'the-whiskey-jar-charlottesville' },
+    { title: 'South Street Brewery', 
+        location: { lat: 38.0293422, lng: -78.4848757 }, 
+        yelpId: 'south-street-brewery-charlottesville' }
 ];
 
 /* locations - used by map.js */

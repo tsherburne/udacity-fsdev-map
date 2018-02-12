@@ -1,5 +1,6 @@
 from flask import Flask, url_for, render_template, jsonify
 import requests
+import os
 
 API_KEY =  'nLl6mhrZl_Ek1sIK4UKCcf9jM3DV8WwQmzqyStRCQos1-7ClyzFBuEeabXBvBYSL1AZWvrfglQ6jZBPhgqrwnrWhsFw3xW_apAkXUsLOHeJ5pjtX_p9dJFYqW9V9WnYx'
 API_HOST = 'https://api.yelp.com'
@@ -30,6 +31,7 @@ if __name__ == '__main__':
     # When running locally, disable OAuthlib's HTTPs verification.
     # ACTION ITEM for developers:
     #     When running in production *do not* leave this option enabled.
+    os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
 
     app.secret_key = 'super_secret_key'
     app.debug = True

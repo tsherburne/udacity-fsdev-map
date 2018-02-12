@@ -26,7 +26,6 @@ var ItemsViewModel = function() {
     /* Initially set filter locations to all locations*/
     for (var i = 0; i < allLocations.length; i++) {
         self.filteredMapItems.push(allLocations[i]);
-        console.log(self.filteredMapItems()[i].title);
     }
 
     locations = self.filteredMapItems();
@@ -43,7 +42,6 @@ var ItemsViewModel = function() {
     };
 
     self.highlightItem = function(item) {
-        console.log("Highlight item: " + item.title);
         populateInfoWindowForItem(item);
     }
     self.filterMap = function() {
@@ -59,13 +57,11 @@ var ItemsViewModel = function() {
             var title = allLocations[i].title;
             if (title.toUpperCase().indexOf(filter) > -1) {
                 self.filteredMapItems.push(item);
-                console.log("Add filtered item: " + title);
             }
         }
 
         locations = self.filteredMapItems();
 
-        console.log("Filter Map: " + self.itemsFilter());
         setMarkers();
         showItems();
     };

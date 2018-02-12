@@ -32,9 +32,30 @@ function populateInfoWindowForItem(item) {
 function populateInfoWindow(marker, infowindow) {
     // Check to make sure the infowindow is not already opened on this marker.
     if (infowindow.marker != marker) {
-        infowindow.marker = marker;
-        infowindow.setContent('<div>' + marker.title + '</div>');
-        infowindow.open(map, marker);
+        // Get Yelp Id for marker
+        var yelpId = "";
+        for (var i = 0; i < locations.length; i++) {
+            if (marker.title == locations[i].title) {
+                yelpId = locations[i].yelpId;
+                break;
+            }
+        }
+
+        var myYelpURL = window.location.href + 'api/yelp/' + yelpId;
+
+        $.getJSON(myYelpURL, function(yelpResponse) {
+
+
+            infowindow.marker = marker;
+            infowindow.setContent('<img src="' + yelpResponse.photos[0] + '" style="width:100px;height:auto;">' +
+                '<div>' + '<i class="fa fa-yelp"></i> ' + yelpResponse.name + '</div>' +
+                '<div>' + yelpResponse.phone + '</div>'
+            );
+            infowindow.open(map, marker);
+
+        });
+
+
         // Make sure the marker property is cleared if the infowindow is closed.
         infowindow.addListener('closeclick', function() {
             infowindow.marker = null;
@@ -109,7 +130,6 @@ function hideItems() {
 }
 
 function mapResize() {
-    console.log("Map Resized");
     google.maps.event.trigger(map, 'resize');
     map.setCenter(center);
     showItems();

@@ -1,6 +1,25 @@
-from flask import Flask, url_for, render_template
+from flask import Flask, url_for, render_template, jsonify
+import requests
+
+API_KEY =  'nLl6mhrZl_Ek1sIK4UKCcf9jM3DV8WwQmzqyStRCQos1-7ClyzFBuEeabXBvBYSL1AZWvrfglQ6jZBPhgqrwnrWhsFw3xW_apAkXUsLOHeJ5pjtX_p9dJFYqW9V9WnYx'
+API_HOST = 'https://api.yelp.com'
+BUSINESS_PATH = '/v3/businesses/'  # Business ID will come after slash.
 
 app = Flask(__name__)
+
+# JSON yelp api endpoint
+@app.route('/api/yelp/<string:yelp_id>/')
+def apiYelp(yelp_id):
+
+    url = API_HOST + BUSINESS_PATH + yelp_id
+
+    headers = {
+        'Authorization': 'Bearer nLl6mhrZl_Ek1sIK4UKCcf9jM3DV8WwQmzqyStRCQos1-7ClyzFBuEeabXBvBYSL1AZWvrfglQ6jZBPhgqrwnrWhsFw3xW_apAkXUsLOHeJ5pjtX_p9dJFYqW9V9WnYx'
+    }
+    
+    response = requests.request('GET', url, headers=headers, params={})
+
+    return jsonify(response.json())
 
 @app.route('/')
 def main():

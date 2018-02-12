@@ -27,3 +27,8 @@
     height: 600px;
     width: 100%;
 }
+
+.info_Image {
+    height: auto;
+    width: 100px;
+}

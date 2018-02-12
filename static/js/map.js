@@ -4,6 +4,11 @@ var center = { lat: 38.0400823, lng: -78.5199934 };
 var markers = [];
 var largeInfowindow;
 
+// setup the icons for the map markers
+var defaultIcon = {};
+var hoverIcon = {};
+
+
 // The callback function for google maps to initialize and display the map
 function initMap() {
 
@@ -41,7 +46,9 @@ function populateInfoWindow(marker, infowindow) {
                 break;
             }
         }
-
+        // animate the selected marker
+        marker.setAnimation(google.maps.Animation.DROP);
+        
         var myYelpURL = window.location.href + 'api/yelp/' + yelpId;
         // Get Yelp info for the selected item
         $.getJSON(myYelpURL, function(yelpResponse) {
@@ -49,7 +56,7 @@ function populateInfoWindow(marker, infowindow) {
             // Populate the info window from the yelp response
             infowindow.marker = marker;
             infowindow.setContent('<img src="' + yelpResponse.photos[0] + 
-                '" style="width:100px;height:auto;">' +
+                '" class=\'info_Image\'";">' +
                 '<div>' + '<i class="fa fa-yelp"></i> ' + 
                 yelpResponse.name + '</div>' +
                 '<div>' + yelpResponse.phone + '</div>'
@@ -57,7 +64,6 @@ function populateInfoWindow(marker, infowindow) {
             infowindow.open(map, marker);
 
         });
-
 
         // Make sure the marker property is cleared when infowindow is closed.
         infowindow.addListener('closeclick', function() {
@@ -70,6 +76,8 @@ function setMarkers() {
     // Hide all items before resetting markers based on 'filtered' locations
     hideItems();
 
+    largeInfowindow = new google.maps.InfoWindow();
+
     // setup the icons for the map markers
     var defaultIcon = {
         path: google.maps.SymbolPath.CIRCLE,
@@ -80,9 +88,6 @@ function setMarkers() {
         strokeColor: 'blue',
         scale: 6
     };
-
-    largeInfowindow = new google.maps.InfoWindow();
-
     // Create map markers for all locations
     for (var i = 0; i < locations.length; i++) {
         // Get the position from the location array.
@@ -113,7 +118,8 @@ function showItems() {
     if (markers.length > 0) {
         var bounds = new google.maps.LatLngBounds();
 
-        // Extend the boundaries of the map for each marker and display the marker
+        // Extend the boundaries of the map for each marker 
+        // and display the marker
         for (var i = 0; i < markers.length; i++) {
             markers[i].setMap(map);
             bounds.extend(markers[i].position);

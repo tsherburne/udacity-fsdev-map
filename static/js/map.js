@@ -1,4 +1,7 @@
-/* global google locations $ */
+// globals
+var google, locations, $, document, setMarkers, showItems,
+    populateInfoWindow, window, hideItems;
+
 var map;
 var center = { lat: 38.0400823, lng: -78.5199934 };
 var markers = [];
@@ -11,8 +14,8 @@ var hoverIcon = {};
 
 // The callback function for google maps to initialize and display the map
 function initMap() {
-
-    map = new google.maps.Map(document.getElementById('map'), {
+    "use strict";
+    map = new google.maps.Map(document.getElementById("map"), {
         zoom: 13,
         center: center,
         mapTypeControl: false
@@ -24,9 +27,11 @@ function initMap() {
 
 // When sidebar item is selected, populate the info window
 function populateInfoWindowForItem(item) {
+    "use strict";
+    var i = 0;
     // Find marker for item
-    for (var i = 0; i < markers.length; i++) {
-        if (item.title == markers[i].title) {
+    for (i = 0; i < markers.length; i += 1) {
+        if (item.title === markers[i].title) {
             // Populate the info window using the map callback function
             populateInfoWindow(markers[i], largeInfowindow);
             return;
@@ -36,78 +41,80 @@ function populateInfoWindowForItem(item) {
 
 // The map callback to populate the info window when a map marker is clicked
 function populateInfoWindow(marker, infowindow) {
+    "use strict";
+    var i = 0, yelpId = "", myYelpURL = "";
     // Check to make sure the infowindow is not already opened on this marker.
-    if (infowindow.marker != marker) {
+    if (infowindow.marker !== marker) {
         // Get Yelp Id for marker
-        var yelpId = "";
-        for (var i = 0; i < locations.length; i++) {
-            if (marker.title == locations[i].title) {
+        for (i = 0; i < locations.length; i += 1) {
+            if (marker.title === locations[i].title) {
                 yelpId = locations[i].yelpId;
                 break;
             }
         }
         // animate the selected marker
         marker.setAnimation(google.maps.Animation.DROP);
-        
-        var myYelpURL = window.location.href + 'api/yelp/' + yelpId;
+
+        myYelpURL = window.location.href + "api/yelp/" + yelpId;
         // Get Yelp info for the selected item
-        $.getJSON(myYelpURL, function(yelpResponse) {
+        $.getJSON(myYelpURL, function (yelpResponse) {
 
             // Populate the info window from the yelp response
             infowindow.marker = marker;
-            infowindow.setContent('<img src="' + yelpResponse.photos[0] + 
-                '" class=\'info_Image\'";">' +
-                '<div>' + '<i class="fa fa-yelp"></i> ' + 
-                yelpResponse.name + '</div>' +
-                '<div>' + yelpResponse.phone + '</div>'
-            );
+            infowindow.setContent("<img src='" + yelpResponse.photos[0] +
+                "' class=\"info_Image\"';'>" +
+                "<div>" + "<i class='fa fa-yelp'></i> " +
+                yelpResponse.name + "</div>" +
+                "<div>" + yelpResponse.phone + "</div>"
+                );
             infowindow.open(map, marker);
-
         });
 
         // Make sure the marker property is cleared when infowindow is closed.
-        infowindow.addListener('closeclick', function() {
+        infowindow.addListener("closeclick", function () {
             infowindow.marker = null;
         });
     }
 }
 
 function setMarkers() {
+    "use strict";
+    var defaultIcon, hoverIcon, i, position, title, marker;
     // Hide all items before resetting markers based on 'filtered' locations
     hideItems();
 
     largeInfowindow = new google.maps.InfoWindow();
 
     // setup the icons for the map markers
-    var defaultIcon = {
+    defaultIcon = {
         path: google.maps.SymbolPath.CIRCLE,
         scale: 5
     };
-    var hoverIcon = {
+    hoverIcon = {
         path: google.maps.SymbolPath.CIRCLE,
-        strokeColor: 'blue',
+        strokeColor: "blue",
         scale: 6
     };
     // Create map markers for all locations
-    for (var i = 0; i < locations.length; i++) {
+    for (i = 0; i < locations.length; i += 1) {
         // Get the position from the location array.
-        var position = locations[i].location;
-        var title = locations[i].title;
+        position = locations[i].location;
+        title = locations[i].title;
 
-        var marker = new google.maps.Marker({
+        marker = new google.maps.Marker({
             position: position,
             title: title,
             animation: google.maps.Animation.DROP,
             icon: defaultIcon
         });
         markers.push(marker);
-        marker.addListener('mouseover', function() {
+        marker.addListener("mouseover", function () {
             this.setIcon(hoverIcon);
         });
-        marker.addListener('mouseout', function() {
+        marker.addListener("mouseout", function () {
             this.setIcon(defaultIcon);
         });
-        marker.addListener('click', function() {
+        marker.addListener("click", function () {
             populateInfoWindow(this, largeInfowindow);
         });
     }
@@ -115,18 +122,19 @@ function setMarkers() {
 
 // loop through the markers array and display them all
 function showItems() {
+    "use strict";
+    var bounds, i;
     if (markers.length > 0) {
-        var bounds = new google.maps.LatLngBounds();
+        bounds = new google.maps.LatLngBounds();
 
-        // Extend the boundaries of the map for each marker 
+        // Extend the boundaries of the map for each marker
         // and display the marker
-        for (var i = 0; i < markers.length; i++) {
+        for (i = 0; i < markers.length; i += 1) {
             markers[i].setMap(map);
             bounds.extend(markers[i].position);
         }
         map.fitBounds(bounds);
-    }
-    else {
+    } else {
         // no markers - just blank map at initial zoom level
         map.setZoom(13);
     }
@@ -134,7 +142,9 @@ function showItems() {
 
 // This function will loop through the items and hide them all.
 function hideItems() {
-    for (var i = 0; i < markers.length; i++) {
+    "use strict";
+    var i;
+    for (i = 0; i < markers.length; i += 1) {
         markers[i].setMap(null);
     }
     markers = [];
@@ -142,7 +152,8 @@ function hideItems() {
 
 // Resize the map when side bar opened / closed
 function mapResize() {
-    google.maps.event.trigger(map, 'resize');
+    "use strict";
+    google.maps.event.trigger(map, "resize");
     map.setCenter(center);
     showItems();
 }

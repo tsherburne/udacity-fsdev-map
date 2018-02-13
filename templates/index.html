@@ -39,7 +39,7 @@
     
 <!-- The main page container for the google map -->
 <div data-bind="css: mainStatus">
-    <div class="w3-theme-dark w3-bar">
+    <div id="header" class="w3-theme-dark w3-bar">
         <div data-bind="css: navStatus">
             <button class="w3-bar-item w3-button w3-xlarge" 
                 data-bind="click: openItems">
@@ -50,7 +50,8 @@
             <h1 class=w3-xlarge>My Neighborhood Map</h1>
         </div>
     </div>
-    <div id="map" class="w3-padding">
+    <div>
+        <div id="map">
     </div>
 </div>
 </body>
@@ -59,6 +60,5 @@
 <script src="{{ url_for('static', filename='js/items.js') }}"></script>
 <script src="{{ url_for('static', filename='js/map.js') }}"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAdflabYfaByitdtISUIwtqCMR_q3j9he4&callback=initMap"></script>
-
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAdflabYfaByitdtISUIwtqCMR_q3j9he4&callback=initMap" onerror="alert('Google Map Failed to load!')"></script>
 </html>

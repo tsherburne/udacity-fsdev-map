@@ -1,6 +1,5 @@
-// globals
-var google, locations, $, document, setMarkers, showItems,
-    populateInfoWindow, window, hideItems;
+/*globals  google, locations, $, document, setMarkers, showItems,
+           populateInfoWindow, window, hideItems*/
 
 var map;
 var center = { lat: 38.0400823, lng: -78.5199934 };
@@ -19,6 +18,14 @@ function initMap() {
         zoom: 13,
         center: center,
         mapTypeControl: false
+    });
+
+    // Create the info window
+    largeInfowindow = new google.maps.InfoWindow();
+    
+    // Make sure the marker property is cleared when infowindow is closed.
+    largeInfowindow.addListener("closeclick", function () {
+        largeInfowindow.marker = null;
     });
 
     setMarkers();
@@ -53,27 +60,24 @@ function populateInfoWindow(marker, infowindow) {
             }
         }
         // animate the selected marker
-        marker.setAnimation(google.maps.Animation.DROP);
+        marker.setAnimation(4);
 
+        // Open info widow with loading... message
+        infowindow.marker = marker;
+        infowindow.open(map, marker);
+        infowindow.setContent(`<div>Loading....</div`);
+        
+        // Populate the info window from the yelp response
         myYelpURL = window.location.href + "api/yelp/" + yelpId;
         // Get Yelp info for the selected item
         $.getJSON(myYelpURL, function (yelpResponse) {
-
-            // Populate the info window from the yelp response
-            infowindow.marker = marker;
-            infowindow.setContent("<img src='" + yelpResponse.photos[0] +
-                "' class=\"info_Image\"';'>" +
-                "<div>" + "<i class='fa fa-yelp'></i> " +
-                yelpResponse.name + "</div>" +
-                "<div>" + yelpResponse.phone + "</div>"
+            infowindow.setContent(`<img src=${yelpResponse.photos[0]}
+                class="info_Image">
+                <div><i class='fa fa-yelp'></i>
+                ${yelpResponse.name}</div>
+                <div>${yelpResponse.phone}</div>`
                 );
-            infowindow.open(map, marker);
-        });
-
-        // Make sure the marker property is cleared when infowindow is closed.
-        infowindow.addListener("closeclick", function () {
-            infowindow.marker = null;
-        });
+        }).fail(function() { infowindow.setContent(`<div>Fetch Error!</div`)});
     }
 }
 
@@ -83,17 +87,15 @@ function setMarkers() {
     // Hide all items before resetting markers based on 'filtered' locations
     hideItems();
 
-    largeInfowindow = new google.maps.InfoWindow();
-
     // setup the icons for the map markers
     defaultIcon = {
         path: google.maps.SymbolPath.CIRCLE,
-        scale: 5
+        scale: 10
     };
     hoverIcon = {
         path: google.maps.SymbolPath.CIRCLE,
         strokeColor: "blue",
-        scale: 6
+        scale: 11
     };
     // Create map markers for all locations
     for (i = 0; i < locations.length; i += 1) {
@@ -145,7 +147,7 @@ function hideItems() {
     "use strict";
     var i;
     for (i = 0; i < markers.length; i += 1) {
-        markers[i].setMap(null);
+        markers[i].setVisible(false);
     }
     markers = [];
 }

@@ -3,11 +3,11 @@
 }
 
 .body_withSidebar {
-    margin-left: 30%;
+    margin-left: auto;
 }
 
 .sidebar_Open {
-    width: 30%;
+    width: auto;
     display: block
 }
 
@@ -24,8 +24,19 @@
 }
 
 #map {
-    height: 600px;
-    width: 100%;
+   position: absolute;
+    top: 65px;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+}
+
+#header {
+    position: absolute;    
+    top: 0px;
+    left: 0px;
+    right: 0px;    
+    height: 65px;
 }
 
 .info_Image {

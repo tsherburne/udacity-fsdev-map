@@ -1,5 +1,4 @@
-// globals
-var ko, mapResize, showItems, setMarkers, populateInfoWindowForItem;
+/*globals ko, mapResize, showItems, setMarkers, populateInfoWindowForItem*/
 
 var allLocations = [
     { title: "UVA Rotunda", location: { lat: 38.0326828, lng: -78.503269 },

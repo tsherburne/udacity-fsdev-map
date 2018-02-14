@@ -27,7 +27,7 @@
     
     <!-- The 'filter' input and search buttons -->
     <form class="w3-bar-item w3-border w3-large" data-bind="submit: filterMap">
-      <input type="text" placeholder="Filter places...." data-bind="textInput: itemsFilter">
+      <input type="text" placeholder="Filter places...." data-bind="textInput: itemsFilter, event: { keyup: filterMap}">
       <button type="submit"><i class="fa fa-search"></i></button>
     </form>
     
